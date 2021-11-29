@@ -21,6 +21,8 @@ class app extends core {
 		
 		self::$console = $console;
 		
+		$this->checkFolders();
+
 		self::include('engine.core.configure');
 		
 		self::$configure = true;
@@ -68,10 +70,17 @@ class app extends core {
 		return self::$configure;
 	}
 	
+	private function checkFolders() {
+		foreach(get_defined_constants(true)['user'] as $folder) {
+			if (!file_exists($folder))
+				mkdir($folder);
+		}
+	}
+
 	public static function isConsole() {
 		return self::$console;
 	}
-	
+
 	public static function singleton($name, $callback) {
 		self::$classes[] = [
 			'name'=>$name,
