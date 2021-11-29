@@ -6,3 +6,5 @@ route::get("/contacts","ContactController@contactList")->name('contacts');
 route::get("/contact/ok","ContactController@contactOk")->name('contact-ok');
 
 route::post('/contact/submit','ContactController@submit')->name('contact-submit');
+
+route::get("/contact/{id}","ContactController@contactShow")->name('contact-show');

@@ -4,7 +4,11 @@ class Contact extends model {
 	protected $table='contacts';
 	
 	public function list() {
-		return $this->select('name','phone','email')->get();
+		return $this->select('id','name','phone','email')->get();
+	}
+
+	public function getContact($id) {
+		return $this->select('id','name','phone','email')->find($id)->first();
 	}
 
 	public function create($props) {
@@ -15,6 +19,7 @@ class Contact extends model {
 		$this->name = $name;
 		$this->phone = $phone;
 		$this->email = $email;
+		
 		return $this->save();
 	}
 }

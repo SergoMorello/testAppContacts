@@ -18,18 +18,29 @@ class ContactController extends controller {
         ]);
     }
 
-	public function submit() {
+    public function contactShow(request $req) {
+        $id = $req->route('id');
+        $contact = $this->model()->Contact->getContact($id);
+        $files = $this->model()->File->getContactFiles($id);
 
-        request::validate([
+        return View('contactShow',[
+            'contact'=>$contact,
+            'files'=>$files
+        ]);
+    }
+
+	public function submit(request $req) {
+        
+        $req->validate([
             'name'=>'required',
             'phone'=>'required',
             'email'=>'required'
         ]);
-
-        $name = request::input('name');
-        $phone = request::input('phone');
-        $email = request::input('email');
-        $files = request::file('files');
+        
+        $name = $req->input('name');
+        $phone = $req->input('phone');
+        $email = $req->input('email');
+        $files = $req->file('files');
         
 		if ($contact = $this->model()->Contact->create([
             'name'=>$name,
@@ -48,7 +59,13 @@ class ContactController extends controller {
                     }
                 }
             }
-            return redirect()->route('contact-ok');
+            if ($req->has('ajax'))
+                return [
+                    'success'=>true,
+                    'redirect'=>route('contact-ok')
+                ];
+            else
+                return redirect()->route('contact-ok');
         }
 	}
 }

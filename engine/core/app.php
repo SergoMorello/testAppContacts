@@ -150,13 +150,29 @@ class app extends core {
 			echo (is_array($result) || is_object($result)) ? response::json($result) : $result;
 		};
 		
+		$routeCallback = function($route) {
+			$return = (object)[
+				'call'=>null,
+				'props'=>$route['props'] ?? []
+			];
+
+			if (is_callable($route['callback'])) {
+				$return->call = $route['callback'];
+			}else{
+				$return->call = [new $route['callback']->controller, $route['callback']->method];
+
+				array_unshift($return->props, new request);
+			}
+
+			return $return;
+		};
+
 		try {
-			
-			$callback = is_callable($route['callback']) ? $route['callback'] : [new $route['callback']->controller,$route['callback']->method];
+			$callback = $routeCallback($route);
 			
 			$return(call_user_func_array(
-				$callback,
-				array_values($route['props'] ?? [])
+				$callback->call, 
+				array_values($callback->props)
 			));
 			
 		} catch (ParseError $e) {

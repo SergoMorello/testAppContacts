@@ -45,8 +45,12 @@
 						<input class="form-control" name="files[]" type="file" id="formFile" multiple>
 					</div>
 
-					<div class="mb-3">
+					<div class="mb-3" id="buttons">
 						<button type="submit" class="btn btn-primary mb-3">Отправить</button>
+					</div>
+
+					<div class="progress" style="display: none;">
+						<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
 					</div>
 				</form>
 			</div>

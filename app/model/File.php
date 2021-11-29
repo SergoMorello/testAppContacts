@@ -3,6 +3,10 @@ class File extends model {
 	// Если нужно переназначить имя таблицы
 	protected $table='files';
 	
+	public function getContactFiles($id) {
+		return $this->where('cid',$id)->get();
+	}
+
 	public function create($props) {
 		$cid = $props['cid'] ?? 0;
 		$file = $props['file'] ?? '';
